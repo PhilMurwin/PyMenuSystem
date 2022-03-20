@@ -19,11 +19,13 @@ class Menu():
 class MainMenu(Menu):
     def __init__(self,game):
         Menu.__init__(self, game)
+        self.offset = -125
         self.state = "Start"
         self.startx, self.starty = self.mid_w, self.mid_h + 30
         self.optionsx, self.optionsy = self.mid_w, self.mid_h + 50
         self.creditsx, self.creditsy = self.mid_w, self.mid_h + 70
-        self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
+        self.cursor_rect.midtop = (self.startx + self.offset, self.starty - 15)
+        self.cursor = pygame.image.load('assets/sprites/FingerCursor.png').convert_alpha()
 
     def display_menu(self):
         self.run_display = True
@@ -35,29 +37,32 @@ class MainMenu(Menu):
             self.game.draw_text("Start Game", 20, self.startx, self.starty)
             self.game.draw_text("Options", 20, self.optionsx, self.optionsy)
             self.game.draw_text("Credits", 20, self.creditsx, self.creditsy)
-            self.draw_cursor()
+            #self.draw_cursor()
+            self.game.display.blit(self.cursor,self.cursor_rect)
             self.blit_screen()
+            
 
     def move_cursor(self):
+        offsety = -15
         if self.game.DOWN_KEY:
             if self.state == 'Start':
-                self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy)
+                self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy + offsety)
                 self.state = 'Options'
             elif self.state == 'Options':
-                self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy)
+                self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy + offsety)
                 self.state = 'Credits'
             elif self.state == 'Credits':
-                self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
+                self.cursor_rect.midtop = (self.startx + self.offset, self.starty + offsety)
                 self.state = 'Start'
         elif self.game.UP_KEY:
             if self.state == 'Start':
-                self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy)
+                self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy + offsety)
                 self.state = 'Credits'
             elif self.state == 'Options':
-                self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
+                self.cursor_rect.midtop = (self.startx + self.offset, self.starty + offsety)
                 self.state = 'Start'
             elif self.state == 'Credits':
-                self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy)
+                self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy + offsety)
                 self.state = 'Options'
 
     def check_input(self):
