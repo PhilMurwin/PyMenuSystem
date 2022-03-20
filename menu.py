@@ -27,6 +27,10 @@ class MainMenu(Menu):
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty - 15)
         self.cursor = pygame.image.load('assets/sprites/FingerCursor.png').convert_alpha()
 
+        # Audio
+        self.blop = pygame.mixer.Sound('assets/audio/menu_blop.wav')
+        self.blop.set_volume(0.2)
+
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -40,7 +44,6 @@ class MainMenu(Menu):
             #self.draw_cursor()
             self.game.display.blit(self.cursor,self.cursor_rect)
             self.blit_screen()
-            
 
     def move_cursor(self):
         offsety = -15
@@ -54,6 +57,7 @@ class MainMenu(Menu):
             elif self.state == 'Credits':
                 self.cursor_rect.midtop = (self.startx + self.offset, self.starty + offsety)
                 self.state = 'Start'
+            self.blop.play()
         elif self.game.UP_KEY:
             if self.state == 'Start':
                 self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy + offsety)
@@ -64,6 +68,7 @@ class MainMenu(Menu):
             elif self.state == 'Credits':
                 self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy + offsety)
                 self.state = 'Options'
+            self.blop.play()
 
     def check_input(self):
         self.move_cursor()
